@@ -7,6 +7,7 @@ module ActiveRecord #:nodoc:
       
       module ClassMethods
         def acts_as_taggable
+          
           has_many :taggings, :as => :taggable, :dependent => :destroy, :include => :tag
           has_many :tags, :through => :taggings
           
@@ -201,7 +202,11 @@ module ActiveRecord #:nodoc:
             end
             
             new_tag_names.each do |new_tag_name|
-              tags << Tag.find_or_create_with_like_by_name(new_tag_name)
+              if respond_to?(:project) && project
+                tags << Tag.find_or_create_with_like_by_name_and_project(new_tag_name, project)
+              else
+                tags << Tag.find_or_create_with_like_by_name(new_tag_name)
+              end
             end
           end
           

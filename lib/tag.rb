@@ -1,6 +1,8 @@
 class Tag < ActiveRecord::Base
   has_many :taggings, :dependent => :destroy
   
+  belongs_to :project
+  
   validates_presence_of :name
   validates_uniqueness_of :name
   
@@ -10,6 +12,11 @@ class Tag < ActiveRecord::Base
   # LIKE is used for cross-database case-insensitivity
   def self.find_or_create_with_like_by_name(name)
     find(:first, :conditions => ["name LIKE ?", name]) || create(:name => name)
+  end
+  
+  # LIKE is used for cross-database case-insensitivity
+  def self.find_or_create_with_like_by_name_and_project(name, project)
+    find(:first, :conditions => ["name LIKE ? AND project_id = ?", name, project.id]) || create(:name => name, :project_id => project_id)
   end
   
   def ==(object)
