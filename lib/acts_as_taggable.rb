@@ -202,10 +202,12 @@ module ActiveRecord #:nodoc:
             end
             
             new_tag_names.each do |new_tag_name|
-              if respond_to?(:project) && project
-                tags << Tag.find_or_create_with_like_by_name_and_project(new_tag_name, project)
+            tag = Tag.find_or_create_with_like_by_name(new_tag_name)
+              if respond_to?(:project_id) && project_id
+                
+                taggings << Tagging.new({:tag => tag, :project_id => project_id})
               else
-                tags << Tag.find_or_create_with_like_by_name(new_tag_name)
+                tags << tag
               end
             end
           end

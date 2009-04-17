@@ -1,6 +1,7 @@
 class Tagging < ActiveRecord::Base #:nodoc:
   belongs_to :tag
   belongs_to :taggable, :polymorphic => true
+  belongs_to :project
   
   def after_destroy
     if Tag.destroy_unused
