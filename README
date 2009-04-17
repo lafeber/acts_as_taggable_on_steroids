@@ -1,5 +1,9 @@
 = acts_as_taggable_on_steroids
 
+Based on the plugin by Jonathan Viney, this scopes the tags per project.
+
+---
+
 If you find this plugin useful, please consider a donation to show your support!
 
   http://www.paypal.com/cgi-bin/webscr?cmd=_send-money
