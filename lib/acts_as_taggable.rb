@@ -143,6 +143,7 @@ module ActiveRecord #:nodoc:
           conditions << send(:sanitize_conditions, options.delete(:conditions)) if options[:conditions]
           conditions << send(:sanitize_conditions, scope[:conditions]) if scope && scope[:conditions]
           conditions << "#{Tagging.table_name}.taggable_type = #{quote_value(base_class.name)}"
+          conditions << "#{Tagging.project_id} = #{project_id}" if respond_to?(:project_id) && project_id
           conditions << type_condition unless descends_from_active_record? 
           conditions.compact!
           conditions = conditions.join(" AND ")
@@ -204,7 +205,6 @@ module ActiveRecord #:nodoc:
             new_tag_names.each do |new_tag_name|
             tag = Tag.find_or_create_with_like_by_name(new_tag_name)
               if respond_to?(:project_id) && project_id
-                
                 taggings << Tagging.new({:tag => tag, :project_id => project_id})
               else
                 tags << tag
